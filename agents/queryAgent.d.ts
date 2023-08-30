@@ -1,5 +1,5 @@
-import { JSONArray } from "datakit"
-import { Agent } from "datakit/agent"
+import { JSONArray } from ".."
+import { Agent } from "../agent"
 
 export type QueryBody = {
     clientType: string

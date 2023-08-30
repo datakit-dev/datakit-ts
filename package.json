@@ -2,10 +2,10 @@
   "name": "@datakit-dev/types",
   "version": "0.0.1",
   "description": "DataKit types declaration for TypeScript.",
-  "main": "datakit.js",
-  "types": "datakit.d.ts",
+  "main": "",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "tsc -p ./types/datakit/tsconfig.json"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
