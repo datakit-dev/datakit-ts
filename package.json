@@ -1,0 +1,28 @@
+{
+  "name": "@datakit-dev/types",
+  "version": "0.0.1",
+  "description": "DataKit types declaration for TypeScript.",
+  "main": "datakit.js",
+  "types": "datakit.d.ts",
+  "scripts": {
+    "build": "tsc -p ./types/datakit/tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datakit-dev/datakit-ts.git"
+  },
+  "keywords": [
+    "datakit",
+    "types",
+    "typescript"
+  ],
+  "author": "Jordan Fowler <jordan@datakit.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/datakit-dev/datakit-ts/issues"
+  },
+  "homepage": "https://github.com/datakit-dev/datakit-ts#readme",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
