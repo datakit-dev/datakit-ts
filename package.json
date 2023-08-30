@@ -1,6 +1,6 @@
 {
   "name": "@datakit-dev/types",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "DataKit types declaration for TypeScript.",
   "main": "",
   "types": "index.d.ts",
