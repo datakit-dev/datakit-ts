@@ -217,4 +217,5 @@ declare namespace http {
     function expectedStatuses(...param: Array<number | ExpectedStatusesObject>): ExpectedStatusesCallback;
     function setResponseCallback(responseCallback: ExpectedStatusesCallback): void;
 }
+
 export default http;

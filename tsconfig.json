@@ -9,7 +9,6 @@
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "types": [],
-        "noEmit": true,
         "forceConsistentCasingInFileNames": true,
     },
     "files": [
