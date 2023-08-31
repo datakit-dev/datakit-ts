@@ -1,9 +1,9 @@
 {
   "name": "@datakit-dev/types",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "DataKit types declaration for TypeScript.",
   "main": "",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
@@ -24,5 +24,8 @@
   "homepage": "https://github.com/datakit-dev/datakit-ts#readme",
   "devDependencies": {
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@types/node": "^20.5.7"
   }
 }

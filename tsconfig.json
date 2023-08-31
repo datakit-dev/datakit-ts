@@ -1,17 +1,27 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "lib": [
-            "es2015"
-        ],
-        "noImplicitAny": true,
-        "noImplicitThis": true,
-        "strictFunctionTypes": true,
-        "strictNullChecks": true,
-        "types": [],
-        "forceConsistentCasingInFileNames": true,
-    },
-    "files": [
-        "index.d.ts",
-    ]
+  "compilerOptions": {
+    "target": "es2015",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "noEmit": true,
+    "allowJs": true,
+    "removeComments": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "baseUrl": "types",
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ],
+  }
 }
