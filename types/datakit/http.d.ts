@@ -3,6 +3,8 @@ export function get(
     params?: any,
 ): any;    
 
-export default {
+export const http = {
     get,
 };
+
+export default http;
