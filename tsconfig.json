@@ -3,7 +3,7 @@
     "target": "es2015",
     "moduleResolution": "node",
     "module": "commonjs",
-    "noEmit": true,
+    // "noEmit": true,
     "allowJs": true,
     "removeComments": false,
     "strict": true,
