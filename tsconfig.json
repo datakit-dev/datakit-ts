@@ -3,7 +3,7 @@
     "target": "es2015",
     "moduleResolution": "node",
     "module": "commonjs",
-    // "noEmit": true,
+    "noEmit": false,
     "allowJs": true,
     "removeComments": false,
     "strict": true,
@@ -18,9 +18,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ],
+    "baseUrl": ".",
+    "paths": {
+      "*": ["types/*"]
+    }
   }
 }
