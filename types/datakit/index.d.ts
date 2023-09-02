@@ -1,7 +1,8 @@
 import './http';
-import './context';
-import './auth';
+import './event';
 import './agent';
+import './service';
+import './context';
 
 export type bytes = number[];
 export interface JSONArray extends Array<JSONValue> {}

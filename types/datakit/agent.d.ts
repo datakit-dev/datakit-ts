@@ -1,10 +1,10 @@
 import { Context } from "./context"
-import { QueryAgent } from "./agents/queryAgent"
+import { SlackAgent } from "./agents/slackAgent"
 
-export type AgentName = "query"
-export type AgentType = QueryAgent
+export type AgentName = "slack"
+export type AgentType = SlackAgent
+
 export interface Agent {
     id: string
     name: AgentName
-    ctx: Context
 }

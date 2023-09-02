@@ -1,18 +1,11 @@
 import { Context } from "./context.js"
+import { Event } from "./event.js"
 
-export type FunctionValidation = {
-    valid: boolean,
-    message?: string,
-    fn?: string,
+export type FunctionArgValue = string | number | boolean | null
+export type FunctionArgs = { [key: string]: FunctionArgValue | Array<FunctionArgValue> }
+
+export type FunctionProps = {
+    ctx: Context,
+    event?: Event,
+    args?: FunctionArgs,
 }
-
-export type FunctionExecution = {
-    id: string,
-}
-
-export type FunctionResults = {
-    id: string,
-    results: Array<any>,
-}
-
-export type IFunction = (ctx: Context) => void;

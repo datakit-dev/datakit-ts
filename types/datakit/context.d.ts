@@ -1,25 +1,10 @@
-import { AgentName, AgentType } from "./agent"
-import { Auth } from "./auth"
-import { Event } from "./event"
-
-export type AgentParam = {
-    id: string;
-    name: AgentName;
-}
-
-export type ContextParams = {
-    apiUrl: string;
-    workspaceId: string;
-    auth: Auth;
-    event: Event;
-    agents: Array<AgentParam>;
-}
+import { Service, ServiceName, ServiceType } from "./agent"
+import { Agent, AgentName, AgentType } from "./agent"
 
 export interface Context {
-    apiUrl: string;
-    workspaceId: string;
-    auth: Auth;
-    event: Event;
-    agents: Array<AgentParam>;
+    // workspaceId: string; // Do we need to expose this? Set by runtime
+    services: Array<Service>;
+    getService(name: ServiceName): ServiceType | undefined;
+    agents: Array<Agent>;
     getAgent(name: AgentName): AgentType | undefined;
 }
