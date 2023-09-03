@@ -1,2 +1,2 @@
 # datakit-ts
-DataKit types declaration for TypeScript.
+TypeScript type declarations for DataKit Cloud GraphQL services.

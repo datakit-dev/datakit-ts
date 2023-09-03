@@ -1,0 +1,776 @@
+"""
+Use to check whether or not a user is authenticated and is associated
+with an optional set of roles.
+"""
+directive @requireAuth(roles: [String]) on FIELD_DEFINITION
+
+"""Use to skip authentication checks and allow public access."""
+directive @skipAuth on FIELD_DEFINITION
+
+type AirbyteCatalog {
+  streams: [AirbyteStream!]!
+}
+
+type AirbyteRecord {
+  data: JSON!
+  emittedAt: Int!
+  namespace: String
+  stream: String!
+}
+
+type AirbyteStream {
+  default_cursor_field: [String]
+  json_schema: JSONSchema!
+  name: String!
+  namespace: String
+  source_defined_cursor: Boolean
+  source_defined_primary_key: [[String]]
+  supported_sync_modes: [String]
+}
+
+type Assistant {
+  chats: [Chat]!
+  createdAt: DateTime!
+  datasets: [AssistantDataset]!
+  description: String!
+  id: String!
+  name: String!
+  updatedAt: DateTime!
+  workspace: Workspace!
+  workspaceId: String!
+}
+
+type AssistantDataset {
+  assistant: Assistant!
+  assistantId: String!
+  columns: [AssistantDatasetColumn!]!
+  id: String!
+  idColumn: Column!
+  idColumnId: String!
+  name: String!
+  resultFunction: String
+  table: Table!
+  tableId: String!
+}
+
+type AssistantDatasetColumn {
+  column: Column!
+  columnId: String!
+  dataset: AssistantDataset!
+  datasetId: String!
+  filterable: Boolean!
+  searchable: Boolean!
+}
+
+type AssistantDatasetIndexStats {
+  totalRowsIndexed: Int!
+  totalRowsQueried: Int!
+}
+
+type AssistantDatasetResults {
+  results: [JSON!]!
+  totalResults: Int!
+}
+
+scalar BigInt
+
+type Chat {
+  clientId: String
+  createdAt: DateTime!
+  id: String!
+  messages: [ChatMessage]!
+  parent: ChatParent
+  parentId: String
+  parentType: String
+  updatedAt: DateTime!
+  user: User
+  userId: String
+  workspace: Workspace!
+  workspaceId: String!
+}
+
+type ChatMessage {
+  chat: Chat!
+  chatId: String!
+  children: [ChatMessage]!
+  content: String!
+  contentId: String
+  contentType: String
+  createdAt: DateTime!
+  id: String!
+  name: String
+  parent: ChatMessage
+  parentId: String
+  role: String!
+  tokenCount: Int!
+  updatedAt: DateTime!
+  user: User
+  userId: String
+}
+
+input ChatMessageFilterInput {
+  after: DateTime
+  contentId: String
+  contentType: String
+  limit: Int
+  roles: [String!]
+}
+
+union ChatParent = Assistant | TextQuery
+
+type Column {
+  createdAt: DateTime!
+  id: String!
+  isNullable: Boolean!
+  isPrimary: Boolean!
+  name: String!
+  ordinalPos: Int!
+  table: Table!
+  tableId: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
+type ColumnSearchResult {
+  id: String!
+  name: String!
+  rank: Float!
+  table: String!
+}
+
+type ColumnSearchResults {
+  results: [ColumnSearchResult!]!
+}
+
+input CopySchemaInput {
+  workspaceId: String!
+}
+
+input CreateAssistantDatasetColumnInput {
+  columnId: String!
+  filterable: Boolean!
+  searchable: Boolean!
+}
+
+input CreateAssistantDatasetInput {
+  assistantId: String!
+  columns: [CreateAssistantDatasetColumnInput!]!
+  idColumnId: String!
+  name: String!
+  resultFunction: String
+  tableId: String!
+}
+
+input CreateAssistantInput {
+  description: String!
+  name: String!
+  workspaceId: String!
+}
+
+input CreateChatInput {
+  clientId: String
+  introMessage: OptionalChatMessageInput
+  parentId: String
+  parentType: String
+  systemMessage: OptionalChatMessageInput
+  workspaceId: String!
+}
+
+input CreateChatMessageInput {
+  chatId: String!
+  clientId: String
+  content: String!
+  context: String
+}
+
+input CreateDestinationInput {
+  auth: JSON
+  config: JSON
+  typeId: String!
+  workspaceId: String!
+}
+
+input CreateSchemaInput {
+  description: String!
+  name: String!
+  namespace: SchemaNamespace!
+  namespaceId: String!
+  title: String!
+  workspaceId: String!
+}
+
+input CreateSourceInput {
+  auth: JSON
+  config: JSON
+  typeId: String!
+  workspaceId: String!
+}
+
+input CreateSqlQueryInput {
+  parentId: String
+  sql: String
+  text: String
+  workspaceId: String!
+}
+
+input CreateSyncInput {
+  destinationId: String
+  destinationTypeId: String
+  schedFreq: Int
+  schedHour: Int
+  schedTz: String
+  schedUtc: String
+  sourceId: String!
+  workspaceId: String!
+}
+
+input CreateTextQueryInput {
+  columns: [TextQueryColumnInput!]
+  sqlQueryId: String
+  text: String
+  workspaceId: String!
+}
+
+input CreateViewInput {
+  name: String!
+  schemaId: String
+  sqlQueryId: String!
+  workspaceId: String!
+}
+
+input CreateVisualizationInput {
+  config: JSON!
+  sqlQueryId: String!
+  textQueryId: String
+  title: String!
+  type: String!
+  workspaceId: String!
+}
+
+input CreateWorkspaceInput {
+  name: String!
+}
+
+scalar Date
+
+scalar DateTime
+
+type Destination {
+  checkSuccess: Boolean!
+  config: JSON
+  createdAt: DateTime
+  id: String!
+  type: DestinationType!
+  typeId: String!
+  updatedAt: DateTime
+  workspace: Workspace!
+  workspaceId: String!
+}
+
+type DestinationType {
+  config: JSON!
+  description: String
+  destinations: [Destination]!
+  hasOauth: Boolean!
+  id: String!
+  isEnabled: Boolean!
+  key: String
+  logo: String
+  name: String!
+  object: String
+  provider: String!
+  uiSchema: JSON
+}
+
+scalar JSON
+
+scalar JSONObject
+
+type JSONSchema {
+  properties: JSON!
+  type: String!
+}
+
+type Mutation {
+  checkDestination(id: String!, schemaId: String!): Destination!
+  checkSource(id: String!): Source!
+  copySchema(id: String!, input: CopySchemaInput!): Schema!
+  createAssistant(input: CreateAssistantInput!): Assistant!
+  createAssistantDataset(input: CreateAssistantDatasetInput!): AssistantDataset!
+  createChat(input: CreateChatInput!): Chat!
+  createChatMessage(input: CreateChatMessageInput!): ChatMessage!
+  createDestination(input: CreateDestinationInput!): Destination!
+  createSchema(input: CreateSchemaInput!): Schema!
+  createSource(input: CreateSourceInput!): Source!
+  createSqlQuery(input: CreateSqlQueryInput!): SqlQuery!
+  createSync(input: CreateSyncInput!): Sync!
+  createTextQuery(input: CreateTextQueryInput!): TextQuery!
+  createView(input: CreateViewInput!): Table!
+  createVisualization(input: CreateVisualizationInput!): Visualization!
+  createWorkspace(input: CreateWorkspaceInput!): Workspace!
+  deleteAssistant(id: String!): Assistant!
+  deleteAssistantDataset(id: String!): AssistantDataset!
+  deleteChat(id: String!): Chat!
+  deleteChatMessage(id: String!): ChatMessage!
+  deleteDestination(id: String!): Destination!
+  deleteSchema(id: String!): Schema!
+  deleteSource(id: String!): Source!
+  deleteSync(id: String!): Sync!
+  deleteTextQuery(id: String!): TextQuery!
+  deleteView(id: String!): Table!
+  deleteVisualization(id: String!): Visualization!
+  deleteWorkspace(id: String!): Workspace!
+  generateChatMessages(id: String!): [ChatMessage]!
+  populateAssistantDatasetIndex(id: String!): AssistantDatasetIndexStats!
+  signIn: User!
+  startSync(id: String!): Sync!
+  updateAssistant(deleteMessages: Boolean!, id: String!, input: UpdateAssistantInput!): Assistant!
+  updateAssistantDataset(id: String!, input: UpdateAssistantDatasetInput!): AssistantDataset!
+  updateDestination(id: String!, input: UpdateDestinationInput!): Destination!
+  updateSource(id: String!, input: UpdateSourceInput!): Source!
+  updateSync(id: String!, input: UpdateSyncInput!): Sync!
+  updateUser(id: String!, input: UpdateUserInput!): User!
+  updateView(id: String!, input: UpdateViewInput!): Table!
+  updateVisualization(id: String!, input: UpdateVisualizationInput!): Visualization!
+  updateWorkspace(id: String!, input: UpdateWorkspaceInput!): Workspace!
+}
+
+input OptionalChatMessageInput {
+  content: String
+  context: String
+}
+
+type PublicSchema {
+  isEnabled: Boolean!
+  schema: Schema!
+}
+
+"""About the Redwood queries."""
+type Query {
+  assistant(id: String!, workspaceId: String!): Assistant
+  assistantDataset(id: String!): AssistantDataset
+  assistantDatasetResults(filters: JSON, id: String!, limit: Int, offset: Int, query: String!): AssistantDatasetResults!
+  assistantDatasets(assistantId: String!): [AssistantDataset!]!
+  assistants(workspaceId: String!): [Assistant!]!
+  chat(id: String, parentId: String, parentType: String, workspaceId: String!): Chat
+  chatMessageChildren(chatId: String!, id: String!): [ChatMessage!]
+  chatMessages(chatId: String!, filter: ChatMessageFilterInput): [ChatMessage!]!
+  chats(clientId: String, parentId: String, parentType: String, workspaceId: String!): [Chat!]!
+  destination(id: String!): Destination
+  destinationType(id: String, isEnabled: Boolean, key: String): DestinationType!
+  destinationTypes(isEnabled: Boolean): [DestinationType!]!
+  destinations: [Destination!]!
+  discoverSource(id: String!): SourceCatalog!
+  publicSchemas(isEnabled: Boolean, limit: Int, offset: Int, search: String, workspaceId: String!): [PublicSchema]
+
+  """Fetches the Redwood root schema."""
+  redwood: Redwood
+  schema(id: String!): Schema
+  schemas(limit: Int, namespaces: [SchemaNamespace], offset: Int, search: String, workspaceId: String!): [Schema]
+  searchColumns(limit: Int, search: String!, workspaceId: String!): ColumnSearchResults!
+  searchSqlQueries(limit: Int, search: String!, workspaceId: String!): SqlQuerySearchResults!
+  searchTables(limit: Int, schemaNamespaces: [SchemaNamespace], search: String!, workspaceId: String!): [TableSearchResult!]!
+  searchTextQueries(limit: Int, search: String!, workspaceId: String!): TextQuerySearchResults!
+  source(id: String!): Source
+  sourceType(id: String, isEnabled: Boolean, key: String): SourceType!
+  sourceTypes(isEnabled: Boolean): [SourceType!]!
+  sources(sourceTypes: [String!], workspaceId: String!): [Source!]!
+  sqlQueries(limit: Int, offset: Int, roots: Boolean, workspaceId: String!): [SqlQuery!]
+  sqlQuery(id: String!): SqlQuery
+  sqlQueryResult(id: String!, jobId: String, pageToken: String, workspaceId: String!): SqlQueryResult
+  stripePlans: [StripePlan!]!
+  sync(id: String!): Sync
+  syncStatses(limit: Int, offset: Int, syncId: String!): [SyncStats!]
+  syncs(destinationIds: [String], destinationTypes: [String], sourceIds: [String], sourceTypes: [String], workspaceId: String!): [Sync!]!
+  table(id: String!): Table
+  tables(schemaNamespaces: [SchemaNamespace], sqlQueryIds: [String], workspaceId: String!): [Table]
+  textQueries(limit: Int, offset: Int, schemaPrefix: String, workspaceId: String!): [TextQuery!]
+  textQuery(id: String!): TextQuery
+  user(id: String!): User
+  visualization(id: String): Visualization
+  visualizations(limit: Int, offset: Int, schemaPrefix: String, sqlQueryId: String, textQueryId: String, workspaceId: String!): [Visualization!]!
+  workspace(id: String!): Workspace
+  workspaceUsage(id: String!): WorkspaceUsage!
+  workspaces: [Workspace!]!
+}
+
+"""
+The RedwoodJS Root Schema
+
+Defines details about RedwoodJS such as the current user and version information.
+"""
+type Redwood {
+  """The current user."""
+  currentUser: JSON
+
+  """The version of Prisma."""
+  prismaVersion: String
+
+  """The version of Redwood."""
+  version: String
+}
+
+type Schema {
+  db: String!
+  description: String!
+  id: String!
+  name: String!
+  namespace: SchemaNamespace!
+  namespaceId: String!
+  tables: [Table]!
+  title: String!
+  workspace: Workspace!
+  workspaceId: String!
+}
+
+enum SchemaNamespace {
+  sync
+  view
+  workspace
+}
+
+type Source {
+  assets: [SourceAsset!]
+  catalog: AirbyteCatalog
+  checkSuccess: Boolean!
+  config: JSON
+  createdAt: DateTime
+  displayName: String
+  id: String!
+  type: SourceType!
+  typeId: String!
+  updatedAt: DateTime
+  workspace: Workspace!
+  workspaceId: String!
+}
+
+type SourceAsset {
+  data: JSON!
+  name: String!
+}
+
+type SourceCatalog {
+  catalog: AirbyteCatalog!
+}
+
+type SourceType {
+  authProvider: String
+  config: JSON!
+  description: String
+  hasOauth: Boolean!
+  id: String!
+  isEnabled: Boolean!
+  key: String
+  logo: String
+  name: String!
+  object: String
+  provider: String!
+  sources: [Source]!
+  uiSchema: JSON
+}
+
+type SqlQuery {
+  children: [SqlQuery!]
+  columns: [SqlQueryColumn!]
+  createdAt: DateTime!
+  downvotes: Int!
+  fields: [SqlQueryField!]
+  id: String!
+  occurences: Int!
+  sql: String
+  text: String
+  updatedAt: DateTime!
+  upvotes: Int!
+  view: Table
+  viewId: String
+  visualizations: [Visualization!]
+}
+
+type SqlQueryColumn {
+  columnId: String!
+  columnName: String!
+  id: String!
+  schemaName: String!
+  sqlQueryId: String!
+  tableName: String!
+}
+
+type SqlQueryField {
+  id: String!
+  mode: String!
+  name: String!
+  ordinalPos: Int!
+  sqlQueryId: String!
+  type: String!
+}
+
+type SqlQueryResult {
+  data: SqlQueryResultData
+  error: Boolean!
+  message: String
+  meta: SqlQueryResultMeta
+}
+
+type SqlQueryResultData {
+  rows: [JSON]
+}
+
+type SqlQueryResultField {
+  mode: String
+  name: String
+  type: String
+}
+
+type SqlQueryResultMeta {
+  fields: [SqlQueryResultField]
+  nextQuery: SqlQueryResultMetaNextQuery
+  totalRows: Int
+}
+
+type SqlQueryResultMetaNextQuery {
+  jobId: String
+  pageToken: String
+}
+
+type SqlQuerySearchResult {
+  rank: Float!
+  sqlQuery: SqlQuery!
+}
+
+type SqlQuerySearchResults {
+  results: [SqlQuerySearchResult!]!
+}
+
+type StripePlan {
+  description: String!
+  id: String!
+  name: String!
+  prices: [StripePrice!]!
+}
+
+type StripePrice {
+  trialPeriodDays: Int
+  unitAmount: Int!
+  unitInterval: String!
+}
+
+type Sync {
+  createdAt: DateTime
+  destination: Destination!
+  destinationId: String!
+  error: String
+  id: String!
+  lastSyncStats: SyncStats
+  schedFreq: Int!
+  schedHour: Int!
+  schedTz: String!
+  schedUtc: String!
+  schema: Schema!
+  schemaId: String!
+  source: Source!
+  sourceId: String!
+  startedAt: DateTime
+  state: JSON
+  status: SyncStatus!
+  syncedAt: DateTime
+  updatedAt: DateTime
+  workspace: Workspace!
+  workspaceId: String!
+}
+
+type SyncStats {
+  duration: Float!
+  endAt: DateTime!
+  id: String!
+  maxCPU: Float!
+  maxMem: Float!
+  startAt: DateTime!
+  sync: Sync!
+  syncId: String!
+  totalBytes: BigInt!
+  totalRecords: BigInt!
+}
+
+enum SyncStatus {
+  ERROR
+  PENDING
+  RUNNING
+  SCHEDULED
+  SUCCESS
+}
+
+type Table {
+  columns: [Column]!
+  createdAt: DateTime!
+  id: String!
+  name: String!
+  schema: Schema!
+  schemaId: String!
+  sqlQuery: SqlQuery
+  updatedAt: DateTime!
+}
+
+type TableSearchResult {
+  rank: Float!
+  table: Table!
+}
+
+type TextQuery {
+  chats: [Chat]!
+  columns: [TextQueryColumn!]
+  createdAt: DateTime
+  id: String!
+  occurences: Int!
+  sqlQueries: [SqlQuery!]
+  text: String!
+  updatedAt: DateTime
+}
+
+type TextQueryColumn {
+  columnId: String!
+  columnName: String!
+  idx: Int
+  schemaPrefix: String
+  tableName: String!
+  textQueryId: String!
+  word: String
+}
+
+input TextQueryColumnInput {
+  columnId: String!
+  idx: Int!
+  word: String!
+}
+
+type TextQuerySearchResult {
+  id: String!
+  rank: Float!
+  text: String!
+}
+
+type TextQuerySearchResults {
+  results: [TextQuerySearchResult!]!
+}
+
+scalar Time
+
+input UpdateAssistantDatasetColumnInput {
+  columnId: String!
+  filterable: Boolean!
+  searchable: Boolean!
+}
+
+input UpdateAssistantDatasetInput {
+  columns: [UpdateAssistantDatasetColumnInput!]
+  idColumnId: String
+  name: String
+  resultFunction: String
+  tableId: String
+}
+
+input UpdateAssistantInput {
+  description: String
+  name: String
+  workspaceId: String
+}
+
+input UpdateDestinationInput {
+  auth: JSON
+  config: JSON
+  workspaceId: String
+}
+
+input UpdateSourceInput {
+  auth: JSON
+  catalog: JSON
+  config: JSON
+  workspaceId: String
+}
+
+input UpdateSyncInput {
+  schedFreq: Int
+  schedHour: Int
+  schedTz: String
+  schedUtc: String
+}
+
+input UpdateUserInput {
+  acceptTerms: Boolean
+  company: String
+  country: String
+  name: String
+  signedInAt: DateTime
+}
+
+input UpdateViewInput {
+  name: String
+  sqlQueryId: String
+}
+
+input UpdateVisualizationInput {
+  config: JSON!
+  sqlQueryId: String
+  textQueryId: String
+  title: String!
+  type: String
+  workspaceId: String
+}
+
+input UpdateWorkspaceInput {
+  name: String
+}
+
+type User {
+  acceptTerms: Boolean!
+  company: String
+  country: String
+  createdAt: DateTime!
+  customerId: String
+  email: String!
+  id: String!
+  name: String!
+  signedInAt: DateTime
+  updatedAt: DateTime
+}
+
+type Visualization {
+  config: JSON!
+  createdAt: DateTime!
+  id: String!
+  sqlQuery: SqlQuery!
+  sqlQueryId: String!
+  textQuery: TextQuery
+  textQueryId: String
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+  workspace: Workspace!
+  workspaceId: String!
+}
+
+type Workspace {
+  assistants: [Assistant!]
+  chats: [Chat!]
+  createdAt: DateTime
+  id: String!
+  name: String!
+  schemata: [Schema!]
+  syncs: [Sync!]
+  updatedAt: DateTime
+  users: [WorkspaceUser!]
+}
+
+type WorkspaceUsage {
+  id: String!
+  queryBytes: BigInt!
+  queryDuration: Float!
+  queryRecords: BigInt!
+  syncBytes: BigInt!
+  syncDuration: Float!
+  syncRecords: BigInt!
+}
+
+type WorkspaceUser {
+  role: String!
+  user: User!
+}

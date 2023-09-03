@@ -39,6 +39,7 @@ export interface Response {
     errorCode: number;
     request: Request | null;
     json(): any;
+    html(): any;
 }
 
 declare namespace http {

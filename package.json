@@ -5,7 +5,8 @@
   "main": "",
   "types": "types/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "generate": "graphql-codegen --config ./config/codegen.ts"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,11 @@
   },
   "homepage": "https://github.com/datakit-dev/datakit-ts#readme",
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/typescript": "4.0.1",
+    "graphql": "^16.8.0",
+    "typescript": "^5.2.2",
+    "@graphql-codegen/introspection": "4.0.0"
   },
   "dependencies": {
     "@types/node": "^20.5.7"
